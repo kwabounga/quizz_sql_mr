@@ -58,6 +58,11 @@ h1, h2 {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    padding: 1rem;
+    background-color: #dff0d8;
+    border-radius: .5rem;
+    max-height: calc(100% - 4rem);
+    overflow: auto;
 }
 #leaderBoard .game .party {
     display: flex;
@@ -68,11 +73,7 @@ h1, h2 {
     width: auto;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
-    background-color: #dff0d8;
-    border-radius: .5rem;
-    max-height: calc(100% - 4rem);
-    overflow: auto;
+    
 }
 .keyword { background-color: #ffcccb; }
 .field { background-color: #90ee90; }

@@ -105,7 +105,7 @@ function drop(ev) {
 }
 /*------------*/
 
-function startGame() {
+function startGame() {    
     const btn = document.getElementById('btnValidateQuery');
     btn.classList.remove('hidden')
     startTimer();
@@ -124,6 +124,7 @@ function updateTimer() {
 
 function stopTimer() {
     clearInterval(timerInterval);
+    document.getElementById('timer').textContent = `Temps: 0s`;
 }
 /*------------*/
 
@@ -131,7 +132,11 @@ function stopTimer() {
 /* Messages and scores PART */
 
 function validateQuery() {
-    
+
+    globalTime += Math.floor((Date.now() - startTime) / 1000);
+    console.log('globalTime',globalTime)
+    stopTimer();
+
     const btn = document.getElementById('btnValidateQuery');
     btn.classList.add('hidden')
     const queryBuilder = document.getElementById('queryBuilder');
@@ -168,8 +173,7 @@ function validateQuery() {
     if (isCorrect) {
         resultHTML += `<p class="success">Bravo ! Votre requête est correcte. Temps : ${elapsedTime} secondes</p>`;
         resultHTML += `<p>${questions[currentQuestionIndex].answer}</p>`;
-        score++;
-        globalTime += Math.floor((Date.now() - startTime) / 1000);
+        score++;        
         confetti({
             particleCount: 100,
             spread: 70,
@@ -178,7 +182,7 @@ function validateQuery() {
     } else {
         resultHTML += `<p class="failure">Désolé, votre requête n'est pas correcte. Essayez encore !</p>`;
     }
-    stopTimer();
+    
     if(currentQuestionIndex < questions.length-1) {
         resultHTML += '<button id="nextQuestion">Question suivante</button>';
     }
@@ -250,32 +254,21 @@ function endQuiz() {
         <div id="queryHistory"></div>
         <div id="leaderBoard"></div>
     `;
+
     updateQueryHistory();
     confetti({
         particleCount: 200,
         spread: 160,
         origin: { y: 0.6 }
     });
-
-    let leaderBoard = getScores();
-    console.log(leaderBoard)
-    const leaderBoardContainer = document.querySelector('#leaderBoard');
-    let htmlContent = `<div class="header">Meilleurs Scores!</div><div class="game">`
-    leaderBoard.forEach(s => {
-        htmlContent += `
-<div class="party">
-    <span class="player">${s.name}:</span>
-    <span class="score">${s.score}pts</span>
-    <span class="time">${s.time}sec </span>
-</div>`
-    });
-    htmlContent += `</div>`
-    leaderBoardContainer.innerHTML = htmlContent
+    displayLeaderBoard();
+    
 }
 
 function restartQuiz() {
     currentQuestionIndex = 0;
     score = 0;
+    globalTime = 0;
     queryHistory = [];
     const container = document.querySelector('.container');
     container.innerHTML = `
@@ -302,8 +295,7 @@ function restartQuiz() {
     initializeGame();
 }
 
-function initializeGame() {
-    globalTime = 0;
+function initializeGame() {    
     initializeElements();
     document.getElementById('currentQuestion').textContent = questions[currentQuestionIndex].question;
     initializeTips();
@@ -365,6 +357,22 @@ function addScoreToLeaderBoard(_score){
     console.log('add Score To leaderBoard')
     scores.scores.push(_score);
     setScores()
+}
+function displayLeaderBoard(){
+    let leaderBoard = getScores();
+    console.log(leaderBoard)
+    const leaderBoardContainer = document.querySelector('#leaderBoard');
+    let htmlContent = `<div class="header">Meilleurs Scores!</div><div class="game">`
+    leaderBoard.forEach(s => {
+        htmlContent += `
+<div class="party">
+    <span class="player">${s.name}:</span>
+    <span class="score">${s.score}pts</span>
+    <span class="time">${s.time}sec </span>
+</div>`
+    });
+    htmlContent += `</div>`
+    leaderBoardContainer.innerHTML = htmlContent;
 }
 /*------------*/
 document.addEventListener("DOMContentLoaded", initializeGame)
