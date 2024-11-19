@@ -343,7 +343,14 @@ function getScores(){
     }
     scores = {scores:( registered_scores??[] )};
     console.log('scores');
-    scores.scores.sort((a,b)=> (+a.time - +b.time))
+    scores.scores.sort((a,b)=> {
+        let sa = (+a.score) * 1000
+        let sb = (+b.score) * 1000
+        sa -= +a.time;
+        sb -= +b.time;
+        return sb - sa;
+
+    })
     console.log(scores)
     
     return scores.scores;
@@ -367,7 +374,7 @@ function displayLeaderBoard(){
         htmlContent += `
 <div class="party">
     <span class="player">${s.name}:</span>
-    <span class="score">${s.score}pts ${s.time}sec </span>
+    <span class="score  score${s.score}">${s.score}pts ${s.time}sec </span>
 </div>`
     });
     htmlContent += `</div>`

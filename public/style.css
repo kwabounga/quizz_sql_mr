@@ -59,7 +59,7 @@ h1, h2 {
     top: 1rem;
     right: 1rem;
     padding: 1rem;
-    background-color: #dff0d8;
+    background-color: #e6e6e6;
     border-radius: .5rem;
     max-height: 500px;
     width:200px;
@@ -69,6 +69,21 @@ h1, h2 {
     display: flex;
     justify-content: space-between;
     gap: .5rem;
+}
+#leaderBoard .game .party {
+    border-bottom: 1px solid white;
+}
+#leaderBoard .game .party:has(.score3){
+    background-color: #dff0d8;
+}
+#leaderBoard .game .party:has(.score2){
+    background-color: #e9f0d8;
+}
+#leaderBoard .game .party:has(.score1){
+    background-color: #f0eed8;
+}
+#leaderBoard .game .party:has(.score0){
+    background-color: #f0dfd8;
 }
 #leaderBoard .game {   
     width: auto;
