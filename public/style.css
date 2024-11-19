@@ -55,13 +55,14 @@ h1, h2 {
     cursor: move;
 }
 #leaderBoard {
-    position: absolute;
+    position: fixed;
     top: 1rem;
     right: 1rem;
     padding: 1rem;
     background-color: #dff0d8;
     border-radius: .5rem;
-    max-height: calc(100% - 4rem);
+    max-height: 500px;
+    width:200px;
     overflow: auto;
 }
 #leaderBoard .game .party {

@@ -367,8 +367,7 @@ function displayLeaderBoard(){
         htmlContent += `
 <div class="party">
     <span class="player">${s.name}:</span>
-    <span class="score">${s.score}pts</span>
-    <span class="time">${s.time}sec </span>
+    <span class="score">${s.score}pts ${s.time}sec </span>
 </div>`
     });
     htmlContent += `</div>`
