@@ -194,6 +194,7 @@ function validateQuery() {
             document.getElementById('currentQuestion').textContent = questions[currentQuestionIndex].question;
             queryBuilder.innerHTML = '';
             resultElement.innerHTML = '';
+            initializeTips();
             startTimer();
         })
         // setTimeout(() => {
@@ -287,7 +288,7 @@ function initializeTips(){
     tips.forEach((tip, id)=>{
         const el = document.createElement('span');
         el.className = `no-draggable ${getType(tip)} `;
-        if(id%3 == 0)
+        if(id % (3-currentQuestionIndex) == 0)
             el.className += ` tips-element`;
         //el.draggable = true;
         el.textContent = tip;
