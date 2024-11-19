@@ -288,10 +288,15 @@ function initializeTips(){
     tips.forEach((tip, id)=>{
         const el = document.createElement('span');
         el.className = `no-draggable ${getType(tip)} `;
-        if(id % (3-currentQuestionIndex) == 0)
-            el.className += ` tips-element`;
+        
         //el.draggable = true;
         el.textContent = tip;
+        if(id % (3-currentQuestionIndex) == 0){
+            el.className += ` tips-element`;
+            el.title = tip;
+            el.textContent = el.textContent.split('').map((l=>'x')).join("");
+
+        }
         queryBuilder.appendChild(el)
     })
 }
