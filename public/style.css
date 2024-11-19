@@ -33,6 +33,18 @@ h1, h2 {
     border-radius: 5px;
     padding: 15px;
 }
+.tips-element {
+    background-color: #e7f3ff!important;
+    color: #e7f3ff;
+    cursor: help;
+}
+.no-draggable {    
+    border: 1px solid #b3d4fc;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin: 5px;
+    display: inline-block;
+}
 .draggable {
     background-color: #e7f3ff;
     border: 1px solid #b3d4fc;
@@ -48,9 +60,11 @@ h1, h2 {
 .operator { background-color: #d3d3d3; }
 .value { background-color: #ffffe0; }
 
+.bordered {
+    border: 2px dashed #ccc;
+}
 #queryBuilder {
     min-height: 100px;
-    border: 2px dashed #ccc;
     padding: 10px;
     margin-bottom: 10px;
 }

@@ -1,4 +1,4 @@
-let scores = {};
+
 const sqlElements = [
     { type: 'keyword', value: 'SELECT' },
     { type: 'keyword', value: 'FROM' },
@@ -11,23 +11,23 @@ const sqlElements = [
     { type: 'field', value: 'service' },
     { type: 'table', value: 'employes' },
     { type: 'operator', value: '=' },
-    { type: 'value', value: 'Informatique' },
-    { type: 'value', value: 'Développement' },
-    { type: 'value', value: 'Infrastructure' },
-    { type: 'value', value: 'Concepteur de requêtes' },
-    { type: 'value', value: 'Développeur Magento' },
-    { type: 'value', value: 'Responsable' }
+    { type: 'value', value: "'Informatique'" },
+    { type: 'value', value: "'Développement'" },
+    { type: 'value', value: "'Infrastructure'" },
+    { type: 'value', value: "'Concepteur_de_requêtes'" },
+    { type: 'value', value: "'Développeur_Magento'" },
+    { type: 'value', value: "'Responsable'" }
 ];
 
 const questions = [
     {
         question: "Qui s'occupe de la conception et l'optimisation des requêtes au sein du service Informatique ?",
-        correctQuery: "SELECT nom, prenom FROM employes WHERE service = 'Informatique' AND fonction = 'Concepteur de requêtes'",
-        answer: "La personne en charge des requêtes au sein du service Informatique est <strong>POUTSI Arsène</strong>"
+        correctQuery: "SELECT nom, prenom FROM employes WHERE service = 'Informatique' AND fonction = 'Concepteur_de_requêtes'",
+        answer: "La personne en charge des requêtes au sein du service Informatique est <strong>Arsène POUTSI</strong>"
     },
     {
         question: "Qui sont les Développeurs Magento du service ?",
-        correctQuery: "SELECT nom, prenom FROM employes WHERE fonction = 'Développeur Magento'",
+        correctQuery: "SELECT nom, prenom FROM employes WHERE fonction = 'Développeur_Magento'",
         answer: "Les personnes en charge des développements ecommerce sont <strong>Jean-Yves CHAILLOU et Tony</strong>"
     },
     {
@@ -42,6 +42,8 @@ let startTime;
 let timerInterval;
 let score = 0;
 let queryHistory = [];
+let scores = {};
+
 
 function initializeElements() {
     const availableElements = document.getElementById('availableElements');
@@ -62,6 +64,7 @@ function initializeElements() {
     setScores();
 }
 
+/* DRAG n DROP PART */
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -93,11 +96,18 @@ function drop(ev) {
 
     if (ev.target.id === 'queryBuilder') {
         ev.target.appendChild(newElement);
-    } else if (ev.target.className.includes('draggable')) {
+    } else if (ev.target.classList.contains('draggable')) {
         ev.target.parentNode.insertBefore(newElement, ev.target.nextSibling);
+    }else if (ev.target.classList.contains('tips-element')) {
+        ev.target.parentNode.insertBefore(newElement, ev.target.nextSibling);
+        ev.target.parentNode.removeChild(ev.target)
     }
 }
+/*------------*/
 
+
+
+/* TIMER PART */
 function startTimer() {
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 1000);
@@ -111,6 +121,10 @@ function updateTimer() {
 function stopTimer() {
     clearInterval(timerInterval);
 }
+/*------------*/
+
+
+/* Messages and scores PART */
 
 function validateQuery() {
     stopTimer();
@@ -118,9 +132,9 @@ function validateQuery() {
     let userQuery = Array.from(queryBuilder.children)
         .map(child => {
             let text = child.textContent.replace(' ×', '');
-            if (child.classList.contains('value')) {
-                text = `'${text}'`;
-            }
+            // if (child.classList.contains('value')) {
+            //     text = `'${text}'`;
+            // }
             return text;
         })
         .join(' ')
@@ -142,6 +156,7 @@ function validateQuery() {
     const correctConditions = correctQuery.split('WHERE')[1].split('AND').map(c => c.trim()).sort();
 
     let resultHTML = `<div class="user-query">Votre requête : ${userQuery}</div>`;
+    resultHTML += `<div class="correct-query">Bonne réponse : ${correctQuery}</div>`;
 
     const isCorrect = userQuery.split('WHERE')[0] === correctQuery.split('WHERE')[0] &&
                       JSON.stringify(userConditions) === JSON.stringify(correctConditions);
@@ -159,6 +174,8 @@ function validateQuery() {
         resultHTML += `<p class="failure">Désolé, votre requête n'est pas correcte. Essayez encore !</p>`;
     }
 
+    resultHTML += '<button id="nextQuestion">Question suivante</button>';
+
     resultElement.innerHTML = resultHTML;
 
     // Ajouter la requête à l'historique
@@ -172,13 +189,16 @@ function validateQuery() {
 
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
-        setTimeout(() => {
+        document.getElementById('nextQuestion').addEventListener("click", () => {
             document.getElementById('questionCounter').textContent = `Question: ${currentQuestionIndex + 1}/${questions.length}`;
             document.getElementById('currentQuestion').textContent = questions[currentQuestionIndex].question;
             queryBuilder.innerHTML = '';
             resultElement.innerHTML = '';
             startTimer();
-        }, 3000);
+        })
+        // setTimeout(() => {
+            
+        // }, 30000);
     } else {
         setTimeout(() => {
             endQuiz();
@@ -223,16 +243,6 @@ function endQuiz() {
     });
 }
 
-function getScoreMessage(score) {
-    if (score === questions.length) {
-        return "Félicitations ! Vous êtes maintenant un expert en SQL !";
-    } else if (score >= questions.length / 2) {
-        return "Bien joué ! Vous avez de bonnes connaissances en SQL.";
-    } else {
-        return "Continuez à pratiquer pour  améliorer vos compétences en SQL !";
-    }
-}
-
 function restartQuiz() {
     currentQuestionIndex = 0;
     score = 0;
@@ -250,7 +260,7 @@ function restartQuiz() {
             </div>
             <div class="card">
                 <h2>Constructeur de Requête</h2>
-                <div id="queryBuilder" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <div id="queryBuilder" class="bordered" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                 <button onclick="validateQuery()">Valider la Requête</button>
             </div>
         </div>
@@ -265,28 +275,61 @@ function restartQuiz() {
 function initializeGame() {
     initializeElements();
     document.getElementById('currentQuestion').textContent = questions[currentQuestionIndex].question;
+    initializeTips();
     startTimer();
 }
 
+function initializeTips(){
+    const queryBuilder = document.getElementById('queryBuilder');
+    queryBuilder.innerHTML = "";
+    let tips = questions[currentQuestionIndex].correctQuery.replaceAll(',', '').split(" ");
+    console.log(tips);
+    tips.forEach((tip, id)=>{
+        const el = document.createElement('span');
+        el.className = `no-draggable ${getType(tip)} `;
+        if(id%3 == 0)
+            el.className += ` tips-element`;
+        //el.draggable = true;
+        el.textContent = tip;
+        queryBuilder.appendChild(el)
+    })
+}
+function getType(value){
+    return sqlElements.find(el => el.value == value).type;
+}
 
-
+function getScoreMessage(score) {
+    if (score === questions.length) {
+        return "Félicitations ! Vous êtes maintenant un expert en SQL !";
+    } else if (score >= questions.length / 2) {
+        return "Bien joué ! Vous avez de bonnes connaissances en SQL.";
+    } else {
+        return "Continuez à pratiquer pour  améliorer vos compétences en SQL !";
+    }
+}
 
 function getScores(){
+    let registered_scores;
     if(localStorage.getItem('results')){
-        let scorss = JSON.parse(localStorage.getItem('results'))
+        registered_scores = JSON.parse(localStorage.getItem('results'))
     }
-    scores.scores = ||{scores:[]};
-    console.log('scores')
-    console.log(scores.scores)
+    scores = {scores:( registered_scores??[] )};
+    console.log('scores');
+    scores.scores.sort((a,b)=> (+a.time - +b.time))
+    console.log(scores)
     scores.scores.push({
-        name:'jean-yves',
-        time:'50',
+        name: 'Arsène',
+        score: 3,
+        time: 42,
     })
+    return scores.scores;
 }
 function setScores(){
     localStorage.setItem('results', JSON.stringify(scores.scores))
     console.log('setScores get')
-    console.log(localStorage.getItem('results'))
+    console.log(JSON.parse(localStorage.getItem('results')))
 }
+/*------------*/
+document.addEventListener("DOMContentLoaded", initializeGame)
 
-initializeGame();
+//*  */initializeGame();
