@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructeur de Requête SQL</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Constructeur de Requête SQL</h1>
+        <div id="timer">Temps: 0s</div>
+        <div id="questionCounter">Question: 1/3</div>
+        <div id="currentQuestion"></div>
+        <div class="grid">
+            <div class="card">
+                <h2>Éléments SQL disponibles</h2>
+                <div id="availableElements"></div>
+            </div>
+            <div class="card">
+                <h2>Constructeur de Requête</h2>
+                <div id="queryBuilder" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                <button onclick="validateQuery()">Valider la Requête</button>
+            </div>
+        </div>
+        <div id="result"></div>
+        <div id="queryHistory">
+            <h2>Historique des requêtes</h2>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="./script/quizz.js"></script>
+</body>
+</html>
