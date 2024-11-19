@@ -54,6 +54,26 @@ h1, h2 {
     display: inline-block;
     cursor: move;
 }
+#leaderBoard {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+#leaderBoard .game .party {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+}
+#leaderBoard .game {   
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: #dff0d8;
+    border-radius: .5rem;
+    max-height: calc(100% - 4rem);
+    overflow: auto;
+}
 .keyword { background-color: #ffcccb; }
 .field { background-color: #90ee90; }
 .table { background-color: #add8e6; }
@@ -62,6 +82,9 @@ h1, h2 {
 
 .bordered {
     border: 2px dashed #ccc;
+}
+.hidden{
+    display: none;
 }
 #queryBuilder {
     min-height: 100px;
