@@ -175,3 +175,12 @@ button {
     justify-content: center;
     margin-top: 20px;
 }
+.card.center-button{
+    flex-direction: column;
+    align-items: center;
+}
+.card.center-button input{
+    border-radius: .3rem;
+    padding: .5rem;
+    border: 1px #90ee90 solid;
+}

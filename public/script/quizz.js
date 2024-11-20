@@ -249,7 +249,7 @@ function endQuiz() {
             <p>${getScoreMessage(score)}</p>
         </div>
         <div class="center-button">
-            <button onclick="restartQuiz()">Retournez au Quiz</button>
+            <button onclick="initializeLogin()">Retournez au Quiz</button>
         </div>
         <div id="queryHistory"></div>
         <div id="leaderBoard"></div>
@@ -294,7 +294,27 @@ function restartQuiz() {
     `;
     initializeGame();
 }
-
+function initializeLogin(){
+    const container = document.querySelector('.container');
+    container.innerHTML = `
+        <h1>Constructeur de Requête SQL</h1>
+        <div id="currentQuestion">Bienvenue sur votre test en SQL</div>
+        <div id="questionCounter">Répondez aux ${questions.length} questions</div>
+        <div id="timer">Le plus rapidement possible</div>
+        <div class="card center-button">
+                <div><input type="text" id="inputName" placeHolder="Votre Nom"/></div>
+                <div><button id="btnStartGame"">Commencer le Test</button></div>
+        </div>
+                
+    `;
+    const btStart = document.getElementById("btnStartGame");
+    btStart.addEventListener("click",(ev)=>{
+        const inputName = document.getElementById("inputName");
+        console.log(inputName.value);
+        player_name = inputName.value.trim();
+        restartQuiz();
+    })
+}
 function initializeGame() {    
     initializeElements();
     document.getElementById('currentQuestion').textContent = questions[currentQuestionIndex].question;
@@ -381,6 +401,8 @@ function displayLeaderBoard(){
     leaderBoardContainer.innerHTML = htmlContent;
 }
 /*------------*/
-document.addEventListener("DOMContentLoaded", initializeGame)
+
+
+document.addEventListener("DOMContentLoaded", initializeLogin)
 
 //*  */initializeGame();
