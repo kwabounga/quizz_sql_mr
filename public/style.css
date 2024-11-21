@@ -22,6 +22,43 @@ h1, h2 {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
+.id-grid{
+    grid-template-columns: repeat(3, 3fr);
+    grid-gap: 1rem;
+    grid-auto-flow: row dense;
+    max-width: 100%;
+    margin-top: 1rem;
+}
+.id-grid .id-card{
+    width: auto;
+    display: flex;
+    background-color: #f0f4f1;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.info {
+    flex: 1 1 auto;
+}
+.info .name{
+
+}
+.info .poste{
+    font-weight: bold;
+}
+.info .service{
+    font-size: small;
+}
+.info .description {
+
+}
+.avatar {
+    flex: 0 0 33%;
+}
+.avatar img {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
 @media (max-width: 768px) {
     .grid {
         grid-template-columns: 1fr;
