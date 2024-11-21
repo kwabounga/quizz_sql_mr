@@ -189,6 +189,10 @@ function validateQuery() {
     if (isCorrect) {
         resultHTML += `<p class="success">Bravo ! Votre requête est correcte. Temps : ${elapsedTime} secondes</p>`;
         resultHTML += `<p>${questions[currentQuestionIndex].answer}</p>`;
+        questions[currentQuestionIndex].ids.forEach(identifier => {
+            resultHTML += `<div class="grid id-grid">${getIdentityCardHtml(identifier)}</div>`;
+        });
+        
         score++;        
         confetti({
             particleCount: 100,
@@ -224,9 +228,6 @@ function validateQuery() {
             initializeTips();
             startGame();
         })
-        // setTimeout(() => {
-            
-        // }, 30000);
     } else {
         setTimeout(() => {
             endQuiz();
@@ -240,12 +241,7 @@ function updateQueryHistory() {
     queryHistory.forEach((item, index) => {
         const historyItem = document.createElement('div');
         historyItem.className = `history-item ${item.isCorrect ? 'success' : 'failure'}`;
-        historyItem.innerHTML = `
-            <p><strong>Question ${item.questionIndex + 1}:</strong> ${questions[item.questionIndex].question}</p>
-            <p>Requête: ${item.query}</p>
-            ${item.isCorrect ? `<p>Réponse : ${questions[item.questionIndex].answer.replace(/<\/?strong>/g, '')}</p>` : ''}
-            <p>${item.isCorrect ? 'Correct' : 'Incorrect'}</p>
-        `;
+        historyItem.innerHTML = raw.history(item);
         historyElement.appendChild(historyItem);
     });
 }
@@ -258,7 +254,7 @@ function endQuiz() {
     })
     
     const container = document.querySelector('.container');
-    container.innerHTML = createHtml.endQuiz();
+    container.innerHTML = raw.endQuiz();
 
     updateQueryHistory();
     confetti({
@@ -278,7 +274,7 @@ function restartQuiz() {
     queryHistory = [];
 
     const container = document.querySelector('.container');
-    container.innerHTML = createHtml.game();
+    container.innerHTML = raw.game();
 
     initializeGame();
 }
@@ -286,7 +282,7 @@ function restartQuiz() {
 function initializeLogin(){
 
     const container = document.querySelector('.container');
-    container.innerHTML = createHtml.login();
+    container.innerHTML = raw.login();
 
     const btStart = document.getElementById("btnStartGame");
     btStart.addEventListener("click",(ev)=>{
@@ -381,7 +377,7 @@ function displayLeaderBoard(){
     const leaderBoardContainer = document.querySelector('#leaderBoard');
     let htmlContent = `<div class="header">Meilleurs Scores!</div><div class="game">`
     leaderBoard.forEach(s => {
-        htmlContent += createHtml.leaderBoardElement(s);
+        htmlContent += raw.leaderBoardElement(s);
     });
     htmlContent += `</div>`
     leaderBoardContainer.innerHTML = htmlContent;
@@ -400,7 +396,7 @@ function showAllTeam(){
 }
 function getIdentityCardHtml(identifier) {
     const p = identities[identifier]
-    return createHtml.identityCard(p);
+    return raw.identityCard(p);
 }
 const identities = {
     arsene:{
@@ -494,7 +490,15 @@ const identities = {
 }
 
 
-const createHtml = {
+const raw = {
+    history:(item)=>{
+        return `
+            <p><strong>Question ${item.questionIndex + 1}:</strong> ${questions[item.questionIndex].question}</p>
+            <p>Requête: ${item.query}</p>
+            ${item.isCorrect ? `<p>Réponse : ${questions[item.questionIndex].answer.replace(/<\/?strong>/g, '')}</p>` : ''}
+            <p>${item.isCorrect ? 'Correct' : 'Incorrect'}</p>
+        `
+    },
     login:()=>{
         return `
         <h1>Constructeur de Requête SQL</h1>
@@ -571,5 +575,3 @@ const createHtml = {
 /* Initialization */
 
 document.addEventListener("DOMContentLoaded", initializeLogin)
-
-//*  */initializeGame();
